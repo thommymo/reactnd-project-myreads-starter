@@ -3,14 +3,12 @@ import React, {Component} from 'react'
 class ListBooks extends Component {
   onChangeShelf = (event) => {
     /* TODO: This might be way to complicated, but I didn't find another simpler solution for now */
-    let book = this.props.books.filter((b) => b.industryIdentifiers[0].identifier === event.target.name)
-    book[0].shelf = event.target.value
+    //let book = this.props.books.filter((b) => b.id === event.target.name)
     if(this.props.onMoveBook)
-      this.props.onMoveBook(event.target.name, event.target.value, book[0])
+      this.props.onMoveBook(event.target.name, event.target.value)
   }
   render(){
     const { books } = this.props;
-    //console.log(books);
     const bookshelfs = [
       {value: "currentlyReading", title: "Currently Reading"},
       {value: "wantToRead", title: "Want to Read"},
@@ -27,18 +25,18 @@ class ListBooks extends Component {
             { /* Loop through bookshelfes */
               bookshelfs.map((bookshelf)=>(
                 <div key={bookshelf.value} className="bookshelf">
-                  <h2 className="bookshelf-title">{bookshelf.title}</h2>
+                  <h2 className="bookshelf-title">{bookshelf.title} </h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       { /* Loop through books in the bookshelf */
                         books.filter((book) => book.shelf===bookshelf.value).map((book) => (
-                          <li key={book.industryIdentifiers[0].identifier}>
+                          <li key={book.id}>
                             <div className="book">
                               <div className="book-top">
                                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                                 <div className="book-shelf-changer">
                                   <select
-                                    name={book.industryIdentifiers[0].identifier}
+                                    name={book.id}
                                     onChange={this.onChangeShelf}
                                     defaultValue={book.shelf}
                                   >
@@ -50,7 +48,7 @@ class ListBooks extends Component {
                                   </select>
                                 </div>
                               </div>
-                              <div className="book-title">{book.title}
+                              <div className="book-title">{book.title} {book.id}
                               </div>
                               <div className="book-authors">{book.authors.join(", ")}</div>
                             </div>
