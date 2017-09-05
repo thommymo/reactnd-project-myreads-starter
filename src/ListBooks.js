@@ -5,8 +5,9 @@ class ListBooks extends Component {
   onChangeShelf = (event) => {
     /* TODO: This might be way to complicated, but I didn't find another simpler solution for now */
     //let book = this.props.books.filter((b) => b.id === event.target.name)
+    let book = this.props.books.filter((b) => b.id === event.target.name)
     if(this.props.onMoveBook)
-      this.props.onMoveBook(event.target.name, event.target.value)
+      this.props.onMoveBook(event.target.name, event.target.value, book)
   }
   render(){
     const { books } = this.props;

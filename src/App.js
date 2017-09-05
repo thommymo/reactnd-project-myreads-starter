@@ -17,8 +17,7 @@ class BooksApp extends Component {
     )
   }
   /* This moves a book from one to another shelf. */
-  moveBook = (id, shelf) => {
-    let book = this.state.books.filter((b) => b.id === id)
+  moveBook = (id, shelf, book) => {
     book[0].shelf=shelf
     this.setState((state) => ({
       books: state.books.filter((b) => b.id !== id).concat(book)
@@ -29,7 +28,7 @@ class BooksApp extends Component {
   render() {
     return (
       <div className="app">
-        
+
         <Route path="/" exact render={() => (
           <ListBooks
             books={this.state.books}
@@ -37,9 +36,14 @@ class BooksApp extends Component {
           />
         )}/>
         <Route path="/search" exact render={({ history }) => (
-          <BookSearch />
+          <BookSearch
+            books={this.state.books}
+            onMoveBook={(id, shelf, book) => {
+              this.moveBook(id, shelf, book)
+              history.push('/')
+            }}
+          />
         )}/>
-
 
       </div>
     )
