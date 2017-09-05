@@ -14,7 +14,7 @@ class BooksApp extends React.Component {
      */
     showSearchPage: false
   }
-  /* This gets an Object with all the books in it and sets the inital state. */
+  /* This gets an Object with all the books in it and sets the inital state. test */
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
         this.setState( { books })
