@@ -14,12 +14,24 @@ class BooksApp extends React.Component {
      */
     showSearchPage: false
   }
-  /* This gets an Object with all the books in it and sets the inital state. test */
+  /* This gets an Object with all the books in it and sets the inital state. */
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
         this.setState( { books })
       }
     )
+  }
+  /* This moves a book from one to another shelf. */
+  moveBook = (id, shelf) => {
+    //var updatedBook = book
+    // set the bookshelf of book to the according bookshelf
+    //book.shelf = shelf
+    let book = this.state.books.filter((b) => b.id === id)
+    book[0].shelf=shelf
+    this.setState((state) => ({
+      books: state.books.filter((b) => b.id !== id).concat(book)
+    }))
+    BooksAPI.update(book[0], shelf)
   }
 
   render() {
@@ -49,6 +61,7 @@ class BooksApp extends React.Component {
         ) : (
           <ListBooks
             books={this.state.books}
+            onMoveBook={this.moveBook}
           />
         )}
       </div>
