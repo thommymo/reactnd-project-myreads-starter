@@ -32,10 +32,18 @@ class BookSearch extends Component {
     }
   }
 
+  setBookShelf = (books) => {
+    var booksInBookshelf = this.props.books.filter((bookInBookshelf) => books.some((book) => book.id === bookInBookshelf.id))
+    return booksInBookshelf.concat(books.filter((book) => !this.props.books.some((bookInBookshelf) => bookInBookshelf.id === book.id)))
+  }
+
   searchBooks = this.debounce((value) => {
       if(value){
         BooksAPI.search(value, 20).then(( searchedBooks ) => {
-            this.setState( { searchedBooks: searchedBooks, query: value})
+            this.setState( {
+              searchedBooks: this.setBookShelf(searchedBooks),
+              //Check all books in searchedBooks and filter
+              query: value})
           }
         )
       }
