@@ -5,30 +5,14 @@ import * as BooksAPI from './BooksAPI'
 class BookSearch extends Component {
   state = {
     searchedBooks: [],
-    currentSearchTerm: "",
     query: ""
   }
 
-  componentWillReceiveProps(nextProps){
-    console.log(location.search);
-    //if (nextProps.location.state === 'desiredState') {
-      this.setState( { query: location.search })
-  //  }
-    //console.log(this.state.query);
-  }
-
-  componentWillMount(){
-    if(location.search){
-      this.setState( { query: location.search })
-    }
-  }
-
   componentDidMount(){
-    if(this.state.query){
+    if(this.state.query!==""){
+      console.log("test");
       this.searchBooks(this.state.query)
     }
-
-
   }
 
   // This method is for debouncing the queries - as this search is "search as you type" it will lead to too much queries while I'm typing.
@@ -50,12 +34,9 @@ class BookSearch extends Component {
 
   searchBooks = this.debounce((value) => {
       if(value){
-        this.setState( { currentSearchTerm: value })
         BooksAPI.search(value, 20).then(( searchedBooks ) => {
-          //if (searchedBooks.length){
             this.setState( { searchedBooks: searchedBooks, query: value})
-            }
-          //}
+          }
         )
       }
     }
@@ -69,7 +50,6 @@ class BookSearch extends Component {
   }
 
   render() {
-    //console.log(this.state.query)
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -83,35 +63,14 @@ class BookSearch extends Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input onChange={(event) => this.searchBooks(event.target.value)} value={this.state.currentSearchTerm} type="text" placeholder="Search by title or author"/>
+            <input onChange={(event) => this.searchBooks(event.target.value)} type="text" placeholder="Search by title or author"/>
 
           </div>
         </div>
         <div className="search-books-results">
           { this.state.searchedBooks.error==="empty query" &&
             <div className="books-grid">
-              <p>No search results for "{this.state.currentSearchTerm}".</p>
-              <p>Other people searched for these terms: </p>
-              <div className="books-grid">
-                <ul>
-                  <li>
-                    <Link to={{
-                      pathname: '/search',
-                      search: '?query=Art',
-                      state: 'desiredState'
-                    }}>Art</Link>
-
-                  </li>
-                  <li>
-                    <Link to={{
-                      pathname: '/search',
-                      search: '?query=Peter',
-                      state: 'desiredState'
-                    }}>Peter</Link>
-
-                  </li>
-                </ul>
-              </div>
+              <p>No search results for "{this.state.query}".</p>
             </div>}
           <ol className="books-grid">
 
