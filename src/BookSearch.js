@@ -1,8 +1,15 @@
 import React, {Component} from 'react'
+import BooksGrid from './BooksGrid'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types'
 
 class BookSearch extends Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    onMoveBook: PropTypes.func.isRequired
+  }
+
   state = {
     searchedBooks: [],
     query: ""
@@ -72,7 +79,6 @@ class BookSearch extends Component {
               you don't find a specific author or title. Every search is limited by search terms.
             */}
             <input onChange={(event) => this.searchBooks(event.target.value)} type="text" placeholder="Search by title or author"/>
-
           </div>
         </div>
         <div className="search-books-results">
@@ -80,37 +86,16 @@ class BookSearch extends Component {
             <div className="books-grid">
               <p>No search results for "{this.state.query}".</p>
             </div>}
-          <ol className="books-grid">
-
-            { this.state.searchedBooks.length>0 &&
-              this.state.searchedBooks.map((book) => (
-
-                <li key={book.id}>
-                  <div className="book">
-                    <div className="book-top">
-                      {/*since not all books do have imageLinks: it's good to check if there are imageLinks, before showing a thumbnail. */}
-                      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks && book.imageLinks.thumbnail})` }}></div>
-                      <div className="book-shelf-changer">
-                        <select
-                          name={book.id}
-                          onChange={this.onChangeShelf}
-                          defaultValue={book.shelf || "none"}
-                        >
-                          <option value="none" disabled>Move to...</option>
-                          <option value="currentlyReading">Currently Reading</option>
-                          <option value="wantToRead" >Want to Read</option>
-                          <option value="read">Read</option>
-                          <option value="none">None</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="book-title">{book.title}
-                    </div>
-                    <div className="book-authors">{book.authors && book.authors.join(", ")}</div>
-                  </div>
-                </li>
-              )) }
-          </ol>
+          <div>
+            {this.state.searchedBooks.length > 0 &&
+              <BooksGrid
+                books={this.state.searchedBooks}
+                onChangeShelf={(event) => {
+                  this.onChangeShelf(event)
+                }}
+              />
+            }
+          </div>
         </div>
       </div>
     )

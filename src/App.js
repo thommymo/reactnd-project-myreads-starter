@@ -40,7 +40,6 @@ class BooksApp extends Component {
             books={this.state.books}
             onMoveBook={(id, shelf, book) => {
               this.moveBook(id, shelf, book)
-              history.push('/')
             }}
           />
         )}/>
