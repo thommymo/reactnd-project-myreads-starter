@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import PropTypes from 'prop-types'
 
+
 class BookSearch extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
@@ -40,8 +41,12 @@ class BookSearch extends Component {
   }
 
   setBookShelf = (books) => {
-    var booksInBookshelf = this.props.books.filter((bookInBookshelf) => books.some((book) => book.id === bookInBookshelf.id))
-    return booksInBookshelf.concat(books.filter((book) => !this.props.books.some((bookInBookshelf) => bookInBookshelf.id === book.id)))
+    if (books.length>0){
+      var booksInBookshelf = this.props.books.filter((bookInBookshelf) => books.some((book) => book.id === bookInBookshelf.id))
+      return booksInBookshelf.concat(books.filter((book) => !this.props.books.some((bookInBookshelf) => bookInBookshelf.id === book.id)))
+    } else {
+      return books
+    }
   }
 
   searchBooks = this.debounce((value) => {
