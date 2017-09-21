@@ -4,7 +4,16 @@ This project was created during the [Udacity](https://udacity.com/) React Nanode
 
 The webapp provides bookshelfs for your books. You can add, move or remove books.
 
-## TL;DR
+### Prerequisites
+
+In order to run, you need a backend app which can be found here:
+
+```
+https://github.com/udacity/reactnd-project-myreads-server
+```
+
+
+## Installing
 
 To get started developing right away:
 
